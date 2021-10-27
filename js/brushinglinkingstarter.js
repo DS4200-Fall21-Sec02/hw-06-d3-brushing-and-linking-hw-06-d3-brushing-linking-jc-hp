@@ -213,7 +213,6 @@ d3.csv("https://raw.githubusercontent.com/DS4200-Fall21-Sec02/hw-06-d3-brushing-
 
     // We need to count the number of times each species was counted
     // For example, setosa, versicolor, and virginica all had a count of 50
-
     var initialArray = new Array(data.map(d => d.Species))
     var newArray = initialArray.pop()
     const initialMap = newArray.reduce((acc, e) => acc.set(e, (acc.get(e) || 0) + 1), new Map());
@@ -223,7 +222,7 @@ d3.csv("https://raw.githubusercontent.com/DS4200-Fall21-Sec02/hw-06-d3-brushing-
       newMap.push({ "Species": key, "Count": value })
     }
 
-    // now we have the counts for each of the items so we can create bars
+    // now we have the counts for each of the items so we can create the bars
 
     // Bars
     var threeBars = svg3.selectAll("mybar")
