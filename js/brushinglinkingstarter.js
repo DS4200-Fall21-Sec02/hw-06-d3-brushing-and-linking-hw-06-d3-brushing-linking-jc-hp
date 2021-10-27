@@ -1,3 +1,4 @@
+// our margins
 var margin = { top: 10, right: 30, bottom: 50, left: 60 },
   width = 460 - margin.left - margin.right,
   height = 450 - margin.top - margin.bottom;
@@ -36,7 +37,7 @@ var color = d3
   .range(["#FF7F50", "#21908dff", "#fde725ff"]);
 
 // Read data and make plots 
-d3.csv("https://raw.githubusercontent.com/DS4200-Fall21-Sec02/hw-06-d3-brushing-and-linking-hw-06-d3-brushing-linking-jc-hp/main/data/iris.csv").then( function(data) {
+d3.csv("https://raw.githubusercontent.com/DS4200-Fall21-Sec02/hw-06-d3-brushing-and-linking-hw-06-d3-brushing-linking-jc-hp/main/data/iris.csv").then(function (data) {
 
   //Scatterplot 1
   {
@@ -106,7 +107,7 @@ d3.csv("https://raw.githubusercontent.com/DS4200-Fall21-Sec02/hw-06-d3-brushing-
       .on("start", clear)
       .on("brush", updateChart1) // Each time the brush selection changes, trigger the 'updateChart' function
 
-    
+
     //TODO: Add brush to the svg
     svg1.call(brush1)
 
@@ -115,7 +116,7 @@ d3.csv("https://raw.githubusercontent.com/DS4200-Fall21-Sec02/hw-06-d3-brushing-
 
   //TODO: Scatterplot 2 (show Sepal width on x-axis and Petal width on y-axis)
 
-  // here here here here her ee af dsaf ads ffjjsadflkjwow thkf shaf klasd flkjasdkjf
+  // this is copied from scatterplot 1 but now we want to use sepal width and petal width 
   //Scatterplot 2
   {
     var xKey2 = "Sepal_Width";
@@ -241,7 +242,7 @@ d3.csv("https://raw.githubusercontent.com/DS4200-Fall21-Sec02/hw-06-d3-brushing-
 
 
 
-  
+
 
   //Brushing Code---------------------------------------------------------------------------------------------
 
@@ -253,46 +254,39 @@ d3.csv("https://raw.githubusercontent.com/DS4200-Fall21-Sec02/hw-06-d3-brushing-
 
   //Is called when we brush on scatterplot #1
   function updateChart1(brushEvent) {
-    extent = brushEvent.selection;
+    extent1 = brushEvent.selection;
 
     //TODO: Check all the circles that are within the brush region in Scatterplot 1
-    myCircle1.classed("selected", function(d){ return isBrushed(extent, x1(d.Sepal_Length), y1(d.Petal_Length) ) } )
+    myCircle1.classed("selected", function (d) { return isBrushed(extent1, x1(d.Sepal_Length), y1(d.Petal_Length)) })
 
     //TODO: Select all the data points in Scatterplot 2 which have the same id as those selected in Scatterplot 1
-    myCircle2.classed("selected", d => (svg1.selectAll(".selected")
-    .nodes()
-    .map((p) => p['id']))
-    .includes(d.id))
+    myCircle2.classed("selected", function (d) { return isBrushed(extent1, x1(d.Sepal_Length), y1(d.Petal_Length)) })
   }
 
 
 
   //Is called when we brush on scatterplot #2
   function updateChart2(brushEvent) {
-    extent = brushEvent.selection;
+    extent2 = brushEvent.selection;
+
+    //TODO: Check all the circles that are within the brush region in Scatterplot 2
+    myCircle2.classed("selected", function (d) { return isBrushed(extent2, x2(d.Sepal_Width), y2(d.Petal_Width)) })
+
+    //TODO: Select all the data points in Scatterplot 1 which have the same id as those selected in Scatterplot 2
+    myCircle1.classed("selected", function (d) { return isBrushed(extent2, x2(d.Sepal_Width), y2(d.Petal_Width)) })
 
     // this is the set used for bars
     var selectedSpecies = new Set();
     selectedSpecies = data.filter(d => (svg2.selectAll(".selected")
-    .nodes()
-    .map((p) => p['id']))
-    .includes(d.id))
-    .map(d => d.Species)
-
-    //TODO: Check all the circles that are within the brush region in Scatterplot 2
-    myCircle2.classed("selected", function(d){ return isBrushed(extent, x2(d.Sepal_Width), y2(d.Petal_Width) ) } )
-
-    //TODO: Select all the data points in Scatterplot 1 which have the same id as those selected in Scatterplot 2
-    myCircle1.classed("selected", d => (svg2.selectAll(".selected")
-    .nodes()
-    .map((p) => p['id']))
-    .includes(d.id))
+      .nodes()
+      .map((p) => p['id']))
+      .includes(d.id))
+      .map(d => d.Species)
 
     //TODO: Select bars in bar chart based on species selected in Scatterplot 2
     threeBars.classed("selected", d => selectedSpecies.includes(d.Species))
 
 
-    
 
   }
 
